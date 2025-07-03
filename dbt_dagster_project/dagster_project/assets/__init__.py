@@ -1,0 +1,1 @@
+from .pagila_assets import rental_analytics

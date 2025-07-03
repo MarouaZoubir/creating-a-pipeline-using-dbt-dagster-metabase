@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: pg_hr_demo
+    environment:
+      POSTGRES_USER: hruser
+      POSTGRES_PASSWORD: hrpass
+      POSTGRES_DB: pagila
+    volumes:
+      - ./pagila-schema.sql:/docker-entrypoint-initdb.d/01_pagila-schema.sql
+      - ./pagila-data.sql:/docker-entrypoint-initdb.d/02_pagila-data.sql
+    ports:
+      - "5432:5432"

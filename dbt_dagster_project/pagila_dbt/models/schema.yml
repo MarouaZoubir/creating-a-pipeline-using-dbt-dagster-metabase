@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: dim_customer
+    description: "Cleaned customer dimension"
+    columns:
+      - name: customer_id
+        tests:
+          - not_null
+          - unique
+      - name: email
+        tests:
+          - not_null
+          - unique
+      - name: signup_date
+        tests:
+          - not_null
+
+  - name: fact_rental
+    description: "Rental fact table"
+    columns:
+      - name: rental_id
+        tests:
+          - not_null
+          - unique
+      - name: rental_datetime
+        tests:
+          - not_null
+      - name: customer_id
+        tests:
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_id
+  - name: stg_staff
+    columns:
+      - name: staff_id
+        tests: [not_null, unique]
+      - name: store_id
+        tests: [not_null]
+      - name: email
+        tests: [not_null]
+  - name: monthly_revenue_by_store
+    description: "Monthly revenue aggregated by store"
+    columns:
+      - name: month
+        tests:
+          - not_null
+      - name: store_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_store')
+              field: store_id
+      - name: total_revenue
+        tests:
+          - not_null
